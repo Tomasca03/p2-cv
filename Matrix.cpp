@@ -1,13 +1,23 @@
 #include <cassert>
 #include "Matrix.hpp"
 
+
 // REQUIRES: mat points to a Matrix
 //           0 < width && 0 < height
 // MODIFIES: *mat
 // EFFECTS:  Initializes *mat as a Matrix with the given width and height,
 //           with all elements initialized to 0.
 void Matrix_init(Matrix* mat, int width, int height) {
-  assert(false); // TODO Replace with your implementation!
+  
+  assert(width > 0);
+  assert(height > 0);
+
+  std::vector<std::vector<int>> row(width);
+
+  for (int i = 0; i < height * width; i++)
+  {
+    mat ->data[i] = 0;
+  }
 }
 
 // REQUIRES: mat points to a valid Matrix
@@ -19,19 +29,35 @@ void Matrix_init(Matrix* mat, int width, int height) {
 //           by a newline. This means there will be an "extra" space at
 //           the end of each line.
 void Matrix_print(const Matrix* mat, std::ostream& os) {
-  assert(false); // TODO Replace with your implementation!
+
+  assert(mat != nullptr);
+  assert(mat -> data.size() == Matrix_height(mat)*Matrix_width(mat));
+  
+  for (int i = 0; i < Matrix_height(mat); i++)
+  {
+    for (int j = 0; j < Matrix_width(mat); i++)
+    {
+      std::cout << Matrix_at(mat, i, j) << " ";
+    }
+    std::cout << std::endl;
+  }
+  
 }
 
 // REQUIRES: mat points to a valid Matrix
 // EFFECTS:  Returns the width of the Matrix.
 int Matrix_width(const Matrix* mat) {
-  assert(false); // TODO Replace with your implementation!
+  assert(mat != nullptr);
+
+  return mat->width;
 }
 
 // REQUIRES: mat points to a valid Matrix
 // EFFECTS:  Returns the height of the Matrix.
 int Matrix_height(const Matrix* mat) {
-  assert(false); // TODO Replace with your implementation!
+  assert(mat != nullptr);
+
+  return mat->height;
 }
 
 // REQUIRES: mat points to a valid Matrix
@@ -43,7 +69,11 @@ int Matrix_height(const Matrix* mat) {
 // EFFECTS:  Returns a pointer to the element in the Matrix
 //           at the given row and column.
 int* Matrix_at(Matrix* mat, int row, int column) {
-  assert(false); // TODO Replace with your implementation!
+  assert(row >= 0 || row < Matrix_height(mat));
+  assert(column >= 0 || column < Matrix_width(mat));
+  assert(mat != nullptr);
+  int value = row * Matrix_width(mat) + column;
+  return &mat->data[value];
 }
 
 // REQUIRES: mat points to a valid Matrix
