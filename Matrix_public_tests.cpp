@@ -16,11 +16,12 @@ using std::ostringstream;
 
 TEST(test_matrix_basic) {
   Matrix mat;
+  
   Matrix_init(&mat, 5, 5);
-
+  
   ASSERT_EQUAL(Matrix_width(&mat), 5);
   ASSERT_EQUAL(Matrix_height(&mat), 5);
-
+  
   Matrix_fill(&mat, 0);
 
   int *ptr = Matrix_at(&mat, 2, 3);
@@ -28,12 +29,15 @@ TEST(test_matrix_basic) {
   *ptr = 42;
 
   const int *cptr = Matrix_at(&mat, 2, 3);
+  
   ASSERT_EQUAL(*cptr, 42);
 
   Matrix_fill_border(&mat, 2);
+  
   ASSERT_EQUAL(*Matrix_at(&mat, 0, 0), 2);
-
+  
   ASSERT_EQUAL(Matrix_max(&mat), 42);
+  
 }
 
 TEST(test_matrix_print) {
