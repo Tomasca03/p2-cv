@@ -7,7 +7,14 @@
 // EFFECTS:  Initializes the Image with the given width and height, with
 //           all pixels initialized to RGB values of 0.
 void Image_init(Image* img, int width, int height) {
-  assert(false); // TODO Replace with your implementation!
+  assert(img != nullptr);
+  assert(0 < width && 0 < height);
+  
+  img->height = height;
+  img->width = width;
+  Matrix_init(&img->blue_channel, width, height);
+  Matrix_init(&img->red_channel, width, height);
+  Matrix_init(&img->green_channel, width, height);
 }
 
 // REQUIRES: img points to an Image
@@ -18,7 +25,44 @@ void Image_init(Image* img, int width, int height) {
 //           from the given input stream.
 // NOTE:     See the project spec for a discussion of PPM format.
 void Image_init(Image* img, std::istream& is) {
-  assert(false); // TODO Replace with your implementation!
+  assert(img != nullptr);
+  
+  std::string format;
+  int max_intensity;
+
+  is >> format;
+  assert(format == "P3");
+
+  int width, height;
+  is >> width >> height;
+
+  is >> max_intensity;
+  assert(max_intensity == 255);
+
+  img->height = height;
+  img->width = width;
+  Matrix_init(&img->blue_channel, width, height);
+  Matrix_init(&img->red_channel, width, height);
+  Matrix_init(&img->green_channel, width, height);
+
+  for (int i = 0; i < height; i++)
+  {
+    for (int j = 0; j < width; j++)
+    {
+      Pixel p;
+      is >> p.r >> p.g >> p.b;
+
+      int *ptr_red = Matrix_at(&img->red_channel, i, j);
+      *ptr_red = p.r;
+
+      int *ptr_green = Matrix_at(&img->green_channel, i, j);
+      *ptr_green = p.g;
+
+      int *ptr_blue = Matrix_at(&img->blue_channel, i, j);
+      *ptr_blue = p.b;
+    }
+  }
+
 }
 
 // REQUIRES: img points to a valid Image
