@@ -37,7 +37,7 @@ void Image_init(Image* img, std::istream& is) {
   is >> width >> height;
 
   is >> max_intensity;
-  assert(max_intensity == 255);
+  assert(max_intensity == MAX_INTENSITY);
 
   img->height = height;
   img->width = width;
@@ -81,7 +81,7 @@ void Image_print(const Image* img, std::ostream& os) {
 
   os << "P3" << "\n";
   os << img->width << " " << img->height << "\n";
-  os << 255 << "\n";
+  os << MAX_INTENSITY << "\n";
 
   for (int i = 0; i < img->height; i++)
   {
@@ -114,6 +114,7 @@ int Image_height(const Image* img) {
 Pixel Image_get_pixel(const Image* img, int row, int column) {
   assert(img != nullptr);
   assert(0 <= row && row < Image_height(img));
+  
   assert(0 <= column && column < Image_width(img));
 
   Pixel p;

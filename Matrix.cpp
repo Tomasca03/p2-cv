@@ -210,6 +210,7 @@ int Matrix_column_of_min_value_in_row(const Matrix* mat, int row,
 int Matrix_min_value_in_row(const Matrix* mat, int row,
                             int column_start, int column_end) {
   assert(mat != nullptr);
+  std::cout << column_start << " " << column_end << " " << Matrix_width(mat) << std::endl;
   assert(row >= 0 && row < Matrix_height(mat));
   assert(column_start >= 0 && column_end < Matrix_width(mat));
   assert(column_start < column_end);
