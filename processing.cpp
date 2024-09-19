@@ -154,11 +154,11 @@ vector<int> find_minimal_vertical_seam(const Matrix* cost) {
   assert(cost != nullptr);
 
   vector<int> seam;
-  seam.push_back(Matrix_column_of_min_value_in_row(cost, -1, 0, Matrix_width(cost)));
-
+  seam.push_back(Matrix_column_of_min_value_in_row(cost, Matrix_height(cost) - 1, 0, Matrix_width(cost)));
+  
   for (int i = Matrix_height(cost) - 2; i >= 0; i--)
   {
-    int col = seam[-1];
+    int col = seam[seam.size() - 1];
 
     if (col == 0)
     {

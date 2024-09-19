@@ -178,17 +178,16 @@ int Matrix_column_of_min_value_in_row(const Matrix* mat, int row,
                                       int column_start, int column_end) {
   assert(mat != nullptr);
   assert(row >= 0 && row < Matrix_height(mat));
-  assert(column_start >= 0 && column_end < Matrix_width(mat));
+  assert(column_start >= 0 && column_end <= Matrix_width(mat));
   assert(column_start < column_end);
 
- 
+  
   int min_value = *Matrix_at(mat, row, column_start);
   int min_column = column_start;
     
   for (int col = column_start + 1; col < column_end; col++) 
   {
     int current_value = *Matrix_at(mat, row, col);
-       
     if (current_value < min_value) 
     {
         min_value = current_value;
@@ -210,9 +209,8 @@ int Matrix_column_of_min_value_in_row(const Matrix* mat, int row,
 int Matrix_min_value_in_row(const Matrix* mat, int row,
                             int column_start, int column_end) {
   assert(mat != nullptr);
-  std::cout << column_start << " " << column_end << " " << Matrix_width(mat) << std::endl;
   assert(row >= 0 && row < Matrix_height(mat));
-  assert(column_start >= 0 && column_end < Matrix_width(mat));
+  assert(column_start >= 0 && column_end <= Matrix_width(mat));
   assert(column_start < column_end);
 
  
