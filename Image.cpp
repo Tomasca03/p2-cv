@@ -87,7 +87,9 @@ void Image_print(const Image* img, std::ostream& os) {
   {
     for (int j = 0; j < img->width; j++)
     {
-      os << *Matrix_at(&img->red_channel, i, j) << " " << *Matrix_at(&img->green_channel, i, j) << " " << *Matrix_at(&img->blue_channel, i, j) << " ";
+      os << *Matrix_at(&img->red_channel, i, j) << " " 
+      << *Matrix_at(&img->green_channel, i, j) << " " 
+      << *Matrix_at(&img->blue_channel, i, j) << " ";
     }
     os << "\n";
   }

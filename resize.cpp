@@ -51,5 +51,5 @@ int main(int argc, char *argv[]) {
 
     Image_print(&input_img, out);
 
-    return 0;
+    return 1;
 }

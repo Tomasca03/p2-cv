@@ -28,4 +28,19 @@ TEST(test_fill_basic) {
 // ADD YOUR TESTS HERE
 // You are encouraged to use any functions from Matrix_test_helpers.hpp as needed.
 
+TEST(test_req) {
+  Matrix mat;
+  const int width = 2;
+  const int height = 2;
+  const int value = 300;
+  Matrix_init(&mat, width, height);
+  Matrix_fill(&mat, value);
+  
+  for(int r = 0; r < height; ++r){
+    for(int c = 0; c < width; ++c){
+      ASSERT_EQUAL(*Matrix_at(&mat, r, c), value);
+    }
+  }
+}
+
 TEST_MAIN() // Do NOT put a semicolon here

@@ -89,11 +89,19 @@ void compute_energy_matrix(const Image* img, Matrix* energy) {
   
   Matrix_init(energy, Image_width(img), Image_height(img));
 
+  Pixel n, s, w, e;
+
   for (int i = 1; i < Matrix_height(energy) - 1; i++)
   {
     for (int j = 1; j < Matrix_width(energy) - 1; j++)
     {
-      *Matrix_at(energy, i, j) = squared_difference(Image_get_pixel(img, i - 1, j),Image_get_pixel(img, i + 1, j)) + squared_difference(Image_get_pixel(img, i, j - 1),Image_get_pixel(img, i, j + 1));
+      n = Image_get_pixel(img, i - 1, j);
+      s = Image_get_pixel(img, i + 1, j);
+      w = Image_get_pixel(img, i, j - 1);
+      e = Image_get_pixel(img, i, j + 1);
+      int vertical = squared_difference(n, s);
+      int horizontal = squared_difference(w, e);
+      *Matrix_at(energy, i, j) =  vertical + horizontal;
     }
   }
 
@@ -111,7 +119,7 @@ void compute_energy_matrix(const Image* img, Matrix* energy) {
 //           computed and written into it.
 //           See the project spec for details on computing the cost matrix.
 void compute_vertical_cost_matrix(const Matrix* energy, Matrix *cost) {
-  assert(energy != nullptr);
+  assert(energy != nullptr && cost != nullptr);
 
   Matrix_init(cost, Matrix_width(energy), Matrix_height(energy));
 
@@ -152,30 +160,21 @@ void compute_vertical_cost_matrix(const Matrix* energy, Matrix *cost) {
 //           See the project spec for details on computing the minimal seam.
 vector<int> find_minimal_vertical_seam(const Matrix* cost) {
   assert(cost != nullptr);
-
-  vector<int> seam;
-  seam.push_back(Matrix_column_of_min_value_in_row(cost, Matrix_height(cost) - 1, 0, Matrix_width(cost)));
-  
-  for (int i = Matrix_height(cost) - 2; i >= 0; i--)
-  {
-    int col = seam[seam.size() - 1];
-
-    if (col == 0)
-    {
-      seam.push_back(Matrix_column_of_min_value_in_row(cost, i, col, col + 2));
-    }
-    else if (col == Matrix_width(cost) - 1)
-    {
-      seam.push_back(Matrix_column_of_min_value_in_row(cost, i, col - 1, col + 1));
-    }
-    else
-    {
-      seam.push_back(Matrix_column_of_min_value_in_row(cost, i, col - 1, col + 2 ));
-    }
+  int height = Matrix_height(cost);
+  int width = Matrix_width(cost);
+  vector<int> seam(height, 0);
+  vector<int> dir = {-1, 0, 1};
+  seam[height - 1] = Matrix_column_of_min_value_in_row(cost, height - 1, 0, width);
+    
+    
+  for(int i = height - 2; i >= 0; i--) {
+      int prv = seam[i + 1];
+        
+      int st = (prv - 1 < 0) ? 0 : prv - 1;
+      int en = (prv + 2 >= width) ? width : prv + 2;
+        
+      seam[i] = Matrix_column_of_min_value_in_row(cost, i, st, en);   
   }
-
-  reverse(seam.begin(), seam.end());
-
   return seam;
 }
 
