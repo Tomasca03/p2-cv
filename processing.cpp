@@ -88,26 +88,29 @@ static int squared_difference(Pixel p1, Pixel p2) {
 void compute_energy_matrix(const Image* img, Matrix* energy) {
   assert(img != nullptr && energy != nullptr);
   
-    Matrix_init(energy, Image_width(img), Image_height(img));
+  Matrix_init(energy, Image_width(img), Image_height(img));
     
-    Pixel n, s, w, e;
-    int maxi = 0;
+  Pixel n, s, w, e;
+  int maxi = 0;
     
-    for(int i = 1; i < Image_height(img) - 1; i++){
-        for(int j = 1; j < Image_width(img) - 1; j++) {
-            n = Image_get_pixel(img, i - 1, j);
-            s = Image_get_pixel(img, i + 1, j);
-            w = Image_get_pixel(img, i, j - 1);
-            e = Image_get_pixel(img, i, j + 1);
+  for(int i = 1; i < Image_height(img) - 1; i++)
+  {
+      for(int j = 1; j < Image_width(img) - 1; j++) 
+      {
+          n = Image_get_pixel(img, i - 1, j);
+          s = Image_get_pixel(img, i + 1, j);
+          w = Image_get_pixel(img, i, j - 1);
+          e = Image_get_pixel(img, i, j + 1);
            
-            int E = squared_difference(n, s) + squared_difference(w, e);
+          int E = squared_difference(n, s) + squared_difference(w, e);
             
-            *Matrix_at(energy, i, j) = E;
-            if(E > maxi){
-                maxi = E;
-            }
-        }
-    }
+          *Matrix_at(energy, i, j) = E;
+          if(E > maxi)
+          {
+              maxi = E;
+          }
+      }
+  }
     
     Matrix_fill_border(energy, maxi);
   
@@ -128,25 +131,30 @@ void compute_vertical_cost_matrix(const Matrix* energy, Matrix *cost) {
     
     Matrix_init(cost, Matrix_width(energy), Matrix_height(energy));
     
-    for(int i = 0; i < Matrix_width(cost); i++) {
+    for(int i = 0; i < Matrix_width(cost); i++) 
+    {
         *Matrix_at(cost, 0, i) = *Matrix_at(energy, 0, i);
     }
     
     vector<int> dir = {-1, 1};
     
-    for(int i = 1; i < Matrix_height(cost); i++){
-        for(int j = 0; j < Matrix_width(cost); j++){
+    for(int i = 1; i < Matrix_height(cost); i++)
+    {
+        for(int j = 0; j < Matrix_width(cost); j++)
+        {
             
             int mini = *Matrix_at(cost, i - 1, j);
             
-            for(size_t k = 0; k < dir.size(); k++) {
+            for(size_t k = 0; k < dir.size(); k++) 
+            {
                 int nxt_col = j + dir[k];
                 
                 if(nxt_col < 0 || nxt_col >= Matrix_width(cost))continue;
                 
                 int temp = *Matrix_at(cost, i - 1, nxt_col);
                 
-                if(temp < mini){
+                if(temp < mini)
+                {
                     mini = temp;
                 }
             }
@@ -176,7 +184,8 @@ vector<int> find_minimal_vertical_seam(const Matrix* cost) {
     seam[height - 1] = Matrix_column_of_min_value_in_row(cost, height - 1, 0, width);
     
     
-    for(int i = height - 2; i >= 0; i--) {
+    for(int i = height - 2; i >= 0; i--) 
+    {
         int prv = seam[i + 1];
         
         int st = (prv - 1 < 0) ? 0 : prv - 1;
@@ -211,18 +220,22 @@ void remove_vertical_seam(Image *img, const vector<int> &seam) {
     Image *removed = new Image;
     Image_init(removed, width - 1, height);
     
-    for(int i = 0; i < height; i++){
+    for(int i = 0; i < height; i++)
+    {
         int col_idx = 0;
         int target = seam[i];
-        for(int j = 0; j < width; j++){
+        for(int j = 0; j < width; j++)
+        {
             if(j == target)continue;
             Image_set_pixel(removed, i, col_idx, Image_get_pixel(img, i, j));
             col_idx++;
         }
     }
 
-    for(int i = 0; i < height; i++){
-        for(int j = 0; j < Image_width(removed); j++){
+    for(int i = 0; i < height; i++)
+    {
+        for(int j = 0; j < Image_width(removed); j++)
+        {
             Image_set_pixel(img, i, j, Image_get_pixel(removed, i, j));
         }
     }
@@ -246,7 +259,8 @@ void seam_carve_width(Image *img, int newWidth) {
     if(newWidth == Image_width(img))return;
     int width = Image_width(img);
     
-    while(width > newWidth) {
+    while(width > newWidth) 
+    {
         Matrix *temp_energy = new Matrix;
         Matrix *temp_cost = new Matrix;
         
