@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc != 4 && argc != 5) {
-        std::cerr << "Usage: resize.exe IN_FILENAME OUT_FILENAME WIDTH [HEIGHT]\n"
+        std::cout << "Usage: resize.exe IN_FILENAME OUT_FILENAME WIDTH [HEIGHT]\n"
                   << "WIDTH and HEIGHT must be less than or equal to original" << std::endl;
         return 1;
     }
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 
     std::ifstream in(input_file);
     if (!in) {
-        std::cerr << "Error opening file: " << input_file << std::endl;
+        std::cout << "Error opening file: " << input_file << std::endl;
         return 1;
     }
 
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 
     if (new_width <= 0 || new_width > original_width || 
         new_height <= 0 || new_height > original_height) {
-        std::cerr << "Usage: resize.exe IN_FILENAME OUT_FILENAME WIDTH [HEIGHT]\n"
+        std::cout << "Usage: resize.exe IN_FILENAME OUT_FILENAME WIDTH [HEIGHT]\n"
                   << "WIDTH and HEIGHT must be less than or equal to original" << std::endl;
         return 1;
     }
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
     
     std::ofstream out(output_file);
     if (!out) {
-        std::cerr << "Error opening file: " << output_file << std::endl;
+        std::cout << "Error opening file: " << output_file << std::endl;
         return 1;
     }
 
