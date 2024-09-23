@@ -6,10 +6,12 @@
 #include "Image.hpp"
 #include "processing.hpp"
 
+using namespace std;
+
 int main(int argc, char *argv[]) {
     if (argc != 4 && argc != 5) {
-        std::cout << "Usage: resize.exe IN_FILENAME OUT_FILENAME WIDTH [HEIGHT]\n"
-                  << "WIDTH and HEIGHT must be less than or equal to original" << std::endl;
+        cout << "Usage: resize.exe IN_FILENAME OUT_FILENAME WIDTH [HEIGHT]\n"
+             << "WIDTH and HEIGHT must be less than or equal to original" << endl;
         return 1;
     }
 
@@ -18,9 +20,9 @@ int main(int argc, char *argv[]) {
     int new_width = std::atoi(argv[3]);
     int new_height = (argc == 5) ? std::atoi(argv[4]) : 0;
 
-    std::ifstream in(input_file);
+    ifstream in(input_file);
     if (!in) {
-        std::cout << "Error opening file: " << input_file << std::endl;
+        cout << "Error opening file: " << input_file << endl;
         return 1;
     }
 
@@ -36,16 +38,16 @@ int main(int argc, char *argv[]) {
 
     if (new_width <= 0 || new_width > original_width || 
         new_height <= 0 || new_height > original_height) {
-        std::cout << "Usage: resize.exe IN_FILENAME OUT_FILENAME WIDTH [HEIGHT]\n"
-                  << "WIDTH and HEIGHT must be less than or equal to original" << std::endl;
+        cout << "Usage: resize.exe IN_FILENAME OUT_FILENAME WIDTH [HEIGHT]\n"
+             << "WIDTH and HEIGHT must be less than or equal to original" << endl;
         return 1;
     }
 
     seam_carve(&input_img, new_width, new_height);
     
-    std::ofstream out(output_file);
+    ofstream out(output_file);
     if (!out) {
-        std::cout << "Error opening file: " << output_file << std::endl;
+        cout << "Error opening file: " << output_file << endl;
         return 1;
     }
 
