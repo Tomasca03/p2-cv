@@ -12,16 +12,9 @@ void Matrix_init(Matrix* mat, int width, int height) {
   assert(width > 0);
   assert(height > 0);
 
-  mat ->data.resize(height * width);
+  mat ->data.resize(height * width, 0);
   mat->height = height;
   mat->width = width;
-
-  for (int i = 0; i < height * width; i++)
-  {
-    mat ->data[i] = 0;
-  }
-
-  
 }
 
 // REQUIRES: mat points to a valid Matrix
@@ -122,24 +115,16 @@ void Matrix_fill(Matrix* mat, int value) {
 void Matrix_fill_border(Matrix* mat, int value) {
   assert(mat != nullptr);
 
-  int width = Matrix_width(mat);
-  int height = Matrix_height(mat);
-
-  for (int i = 0; i < width; i++)
+  for(int i = 0; i < mat->height; i++)
   {
-   *Matrix_at(mat, 0, i) = value;
-  }
-  for (int i = 0; i < width; i++)
-  {
-   *Matrix_at(mat, height - 1, i) = value;
-  }
-  for (int i = 0; i < height; i++)
-  {
-   *Matrix_at(mat, i, 0) = value;
-  }
-  for (int i = 0; i < height; i++)
-  {
-   *Matrix_at(mat, i, width - 1) = value;
+    for(int j = 0; j < mat->width; j++)
+    {
+            
+      if(i == 0 || i == mat->height - 1 || j == 0 || j == mat->width - 1)
+      {
+        *Matrix_at(mat, i, j) = value;
+      }
+    }
   }
 }
 
@@ -195,7 +180,6 @@ int Matrix_column_of_min_value_in_row(const Matrix* mat, int row,
     }
   }
 
-  
   return min_column;
 }
 

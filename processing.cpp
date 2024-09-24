@@ -126,6 +126,7 @@ void compute_energy_matrix(const Image* img, Matrix* energy) {
 //           size as the given energy Matrix, and then the cost matrix is
 //           computed and written into it.
 //           See the project spec for details on computing the cost matrix.
+/*
 void compute_vertical_cost_matrix(const Matrix* energy, Matrix *cost) {
   assert(energy != nullptr && cost != nullptr);
     
@@ -164,6 +165,43 @@ void compute_vertical_cost_matrix(const Matrix* energy, Matrix *cost) {
     }
     
 }
+*/
+void compute_vertical_cost_matrix(const Matrix* energy, Matrix *cost) {
+  assert(energy != nullptr && cost != nullptr);
+
+  Matrix_init(cost, Matrix_width(energy), Matrix_height(energy));
+
+  for (int i = 0; i < Matrix_width(cost); i++)
+  {
+    *Matrix_at(cost, 0, i) = *Matrix_at(energy, 0, i);
+  }
+
+  for (int i = 1; i < Matrix_height(cost); i++)
+  {
+    for (int j = 0; j < Matrix_width(cost); j++)
+    {
+      int mini;
+      int e = *Matrix_at(energy, i, j);
+      if (j == 0)
+      {
+        mini = Matrix_min_value_in_row(cost, i - 1, j, j + 2);
+        *Matrix_at(cost, i, j) = e + mini;
+      }
+      else if (j == Matrix_width(cost) - 1)
+      {
+        mini = Matrix_min_value_in_row(cost, i - 1, j -1, j + 1);
+        *Matrix_at(cost, i, j) = e + mini;
+      }
+      else
+      {
+        mini = Matrix_min_value_in_row(cost, i - 1, j -1, j + 2);
+        *Matrix_at(cost, i, j) = e + mini;
+      }
+    }
+  }
+}
+
+
 
 
 // REQUIRES: cost points to a valid Matrix

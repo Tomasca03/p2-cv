@@ -39,11 +39,7 @@ void Image_init(Image* img, std::istream& is) {
   is >> max_intensity;
   assert(max_intensity == MAX_INTENSITY);
 
-  img->height = height;
-  img->width = width;
-  Matrix_init(&img->blue_channel, width, height);
-  Matrix_init(&img->red_channel, width, height);
-  Matrix_init(&img->green_channel, width, height);
+  Image_init(img, width, height);
 
   for (int i = 0; i < height; i++)
   {
